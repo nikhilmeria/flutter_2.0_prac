@@ -1,3 +1,4 @@
+import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/product-overview.dart';
 import 'package:flutter/material.dart';
 
 void main() async {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.lightBlue,
       ),
-      body: 
+      body: ProductsScreen(),
     );
   }
 }
