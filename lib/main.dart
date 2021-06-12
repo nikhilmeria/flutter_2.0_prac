@@ -1,14 +1,26 @@
-import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/product-overview.dart';
+import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/product_provider.dart';
+import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/productDetailsScreen.dart';
+import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/productsScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
-    MaterialApp(
-      home: MyApp(),
-      title: "we2 Shop",
-      debugShowCheckedModeBanner: false,
-      routes: {},
+    ChangeNotifierProvider(
+      create: (ctx) => ProductProvider(),
+      child: MaterialApp(
+        theme: ThemeData(
+          accentColor: Colors.orangeAccent,
+          primaryColor: Colors.purpleAccent,
+        ),
+        home: MyApp(),
+        title: "we2 Shop",
+        debugShowCheckedModeBanner: false,
+        routes: {
+          "/productDetails": (ctx) => ProductDetailsScreen(),
+        },
+      ),
     ),
   );
 }

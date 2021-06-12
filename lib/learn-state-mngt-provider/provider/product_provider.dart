@@ -1,8 +1,8 @@
 import 'package:coffee_shop_ui/learn-state-mngt-provider/models/product.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
-class ProductsScreen extends StatelessWidget {
-  final List<Product> products = [
+class ProductProvider with ChangeNotifier {
+  List<Product> _products = [
     Product(
       id: 'p1',
       title: 'Red Shirt',
@@ -37,8 +37,7 @@ class ProductsScreen extends StatelessWidget {
     ),
   ];
 
-  @override
-  Widget build(BuildContext context) {
-    return Container();
+  List<Product> get products {
+    return [..._products];
   }
 }
