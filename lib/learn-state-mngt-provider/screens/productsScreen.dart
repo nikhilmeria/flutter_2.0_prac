@@ -6,8 +6,11 @@ import 'package:provider/provider.dart';
 class ProductsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ProductProvider productsData = Provider.of<ProductProvider>(context);
+    ProductProvider productsData =
+        Provider.of<ProductProvider>(context, listen: true);
     final productItems = productsData.products;
+    final idData = productsData.findById(productItems[1].id!);
+    print("idData = ${idData.description}");
 
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),

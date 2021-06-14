@@ -8,7 +8,6 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("image = $imageUrl");
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed("/productDetails", arguments: {

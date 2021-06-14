@@ -36,6 +36,17 @@ class MyApp extends StatelessWidget {
         ),
         centerTitle: true,
         backgroundColor: Colors.lightBlue,
+        actions: [
+          PopupMenuButton(
+            itemBuilder: (ctx) => [
+              PopupMenuItem(child: Text('Profile'), value: 0),
+              PopupMenuItem(child: Text('Settings'), value: 1),
+            ],
+            onSelected: (int valueSelected) {
+              print("popup item selectede => $valueSelected");
+            },
+          ),
+        ],
       ),
       body: ProductsScreen(),
     );

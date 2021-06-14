@@ -40,4 +40,14 @@ class ProductProvider with ChangeNotifier {
   List<Product> get products {
     return [..._products];
   }
+
+  Product findById(String id) {
+    return products.firstWhere((ei) => ei.id == id);
+  }
+
+  //fn to toggle favorite status
+  // void toggleFavoriteStatus(String id) {
+  //   findById(id).isFavorite = !findById(id).isFavorite;
+  //   notifyListeners();
+  // }
 }
