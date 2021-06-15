@@ -9,8 +9,8 @@ class ProductsScreen extends StatelessWidget {
     ProductProvider productsData =
         Provider.of<ProductProvider>(context, listen: true);
     final productItems = productsData.products;
-    final idData = productsData.findById(productItems[1].id!);
-    print("idData = ${idData.description}");
+    // final idData = productsData.findById(productItems[1].id!);
+    // print("idData = ${idData.description}");
 
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
@@ -18,7 +18,9 @@ class ProductsScreen extends StatelessWidget {
       itemBuilder: (ctx, index) => ProductItem(
         productItems[index].id,
         productItems[index].title,
+        productItems[index].price,
         productItems[index].imageUrl,
+        productItems[index].description,
       ),
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 2,
