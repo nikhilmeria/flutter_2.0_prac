@@ -1,9 +1,12 @@
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
+import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/order_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/product_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/cartScreen.dart';
+import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/orderScreen.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/productDetailsScreen.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/productsScreen.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/widgets/badge.dart';
+import './learn-state-mngt-provider/widgets/app_drawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -18,6 +21,9 @@ void main() async {
         ChangeNotifierProvider(
           create: (ctx) => CartProvider(),
         ),
+        ChangeNotifierProvider(
+          create: (ctx) => OrderProvider(),
+        ),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -30,6 +36,7 @@ void main() async {
         routes: {
           "/productDetails": (ctx) => ProductDetailsScreen(),
           "/cartDetails": (ctx) => CartScreen(),
+          "/orderDetails": (ctx) => OrderScreen(),
         },
       ),
     ),
@@ -72,6 +79,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
       ),
+      drawer: AppDrawer(),
       body: ProductsScreen(),
     );
   }
