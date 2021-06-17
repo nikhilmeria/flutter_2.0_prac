@@ -1,6 +1,7 @@
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/order_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/product_provider.dart';
+import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/addProductScreen.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/cartScreen.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/orderScreen.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/productDetailsScreen.dart';
@@ -37,6 +38,7 @@ void main() async {
           "/productDetails": (ctx) => ProductDetailsScreen(),
           "/cartDetails": (ctx) => CartScreen(),
           "/orderDetails": (ctx) => OrderScreen(),
+          "/addProduct": (ctx) => AddProductScreen(),
         },
       ),
     ),

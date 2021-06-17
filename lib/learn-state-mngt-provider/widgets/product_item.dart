@@ -47,7 +47,20 @@ class ProductItem extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             trailing: IconButton(
-              onPressed: () => cartData.addItemToCart(id!, price!, title!),
+              onPressed: () {
+                cartData.addItemToCart(id!, price!, title!);
+                ScaffoldMessenger.of(context).clearSnackBars();
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Product added to cart ...',
+                      style: TextStyle(
+                        fontSize: 15.0,
+                      ),
+                    ),
+                  ),
+                );
+              },
               icon: Icon(
                 Icons.shopping_cart,
               ),
