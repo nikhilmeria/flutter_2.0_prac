@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:coffee_shop_ui/learn-state-mngt-provider/models/product.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 
 class ProductProvider with ChangeNotifier {
   List<Product> _products = [
@@ -39,6 +42,60 @@ class ProductProvider with ChangeNotifier {
 
   List<Product> get products {
     return [..._products];
+  }
+
+  Future<void> fetchProductsFromDB() async {
+    try {
+      final url = Uri.parse(
+          "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/products.json");
+
+      final resp = await http.get(url);
+      print("resp => ${resp.body}");
+    } catch (err) {
+      print("Error in get => ${err.toString()}");
+      throw err;
+    }
+  }
+
+  Future<void> addProduct(Product recdProduct) async {
+    // adding new product to firebase database
+    final url = Uri.parse(
+        "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/products.json");
+
+    try {
+      final resp = await http.post(
+        url,
+        body: json.encode(
+          {
+            "title": recdProduct.title,
+            "description": recdProduct.description,
+            " price": recdProduct.price,
+            "imageUrl": recdProduct.imageUrl,
+          },
+        ),
+      );
+      print("resp => ${resp.body}");
+      Product newProduct = Product(
+        id: json.decode(resp.body)["name"],
+        title: recdProduct.title,
+        description: recdProduct.description,
+        price: recdProduct.price,
+        imageUrl: recdProduct.imageUrl,
+      );
+
+      _products.add(newProduct);
+      notifyListeners();
+
+      print("product data => $products");
+    } catch (err) {
+      print("Error in post => ${err.toString()}");
+      throw err;
+    }
+  }
+
+  void deleteProduct(String productId) {
+    _products.removeWhere((ei) => ei.id == productId);
+    notifyListeners();
   }
 
   Product findById(String id) {
