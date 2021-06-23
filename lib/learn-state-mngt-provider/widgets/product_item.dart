@@ -48,6 +48,7 @@ class ProductItem extends StatelessWidget {
             ),
             trailing: IconButton(
               onPressed: () {
+                print("cartData  values => $price =  $title ");
                 cartData.addItemToCart(id!, price!, title!);
                 ScaffoldMessenger.of(context).clearSnackBars();
                 ScaffoldMessenger.of(context).showSnackBar(

@@ -34,7 +34,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
     print("dispose called");
     _imageUrlController.dispose();
     _imageUrlFocusNode.dispose();
-    _imageUrlFocusNode.removeListener(_imageUpload); // video no 230
+    // _imageUrlFocusNode.removeListener(_imageUpload); // video no 230
     super.dispose();
   } // always dispose all "TextEditingController" to avoid mem leak.
 
@@ -217,3 +217,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
     );
   }
 }
+
+//https://cdn.mos.cms.futurecdn.net/ec962d910de5801abc4812400ebfadda-1200-80.jpg
+//https://cdn.vox-cdn.com/thumbor/Vgy3FfpWvBD32CYZrcNq6itGqnw=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/20034840/ishMfuW.png

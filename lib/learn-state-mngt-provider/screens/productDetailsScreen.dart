@@ -7,6 +7,7 @@ class ProductDetailsScreen extends StatelessWidget {
         ModalRoute.of(context)?.settings.arguments as Map<String, Object?>;
     final productTitle = routeArgs["title"];
     print("productTitle = $productTitle");
+
     return Scaffold(
       appBar: AppBar(
         title: Text(" Title => ${routeArgs["title"]}"),

@@ -82,7 +82,13 @@ class MyApp extends StatelessWidget {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductsScreen(),
+      body: RefreshIndicator(
+        onRefresh: () {
+          return Provider.of<ProductProvider>(context, listen: false)
+              .fetchProductsFromDB();
+        },
+        child: ProductsScreen(),
+      ),
     );
   }
 }

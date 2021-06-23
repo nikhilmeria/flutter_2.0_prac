@@ -33,28 +33,7 @@ class CartScreen extends StatelessWidget {
                     "\$ ${cartData.getTotal}",
                     style: TextStyle(fontSize: 20),
                   ),
-                  TextButton(
-                    child: Text(
-                      'ORDER NOW',
-                      style: TextStyle(
-                        color: Colors.black87,
-                      ),
-                    ),
-                    onPressed: () {
-                      Provider.of<OrderProvider>(context, listen: false)
-                          .addOrder(cartData.cartItem.values.toList(),
-                              cartData.getTotal);
-
-                      // print(
-                      //     "OrderDetails => ${Provider.of<OrderProvider>(context, listen: false).orderItem[0].products![0].title}");
-
-                      //clear the cart
-                      cartData.clearCart;
-
-                      //push to orders screen
-                      Navigator.of(context).pushNamed("/orderDetails");
-                    },
-                  ),
+                  OrderButton(cartData: cartData),
                 ],
               ),
             ),
@@ -74,6 +53,58 @@ class CartScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class OrderButton extends StatefulWidget {
+  const OrderButton({
+    Key? key,
+    required this.cartData,
+  }) : super(key: key);
+
+  final CartProvider cartData;
+
+  @override
+  _OrderButtonState createState() => _OrderButtonState();
+}
+
+class _OrderButtonState extends State<OrderButton> {
+  bool isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      child: isLoading
+          ? CircularProgressIndicator()
+          : Text(
+              'ORDER NOW',
+              style: TextStyle(
+                color: Colors.black87,
+              ),
+            ),
+      onPressed: widget.cartData.getTotal <= 0 || isLoading == true
+          ? null
+          : () {
+              setState(() {
+                isLoading = true;
+              });
+              Provider.of<OrderProvider>(context, listen: false).addOrder(
+                  widget.cartData.cartItem.values.toList(),
+                  widget.cartData.getTotal);
+
+              // print(
+              //     "OrderDetails => ${Provider.of<OrderProvider>(context, listen: false).orderItem[0].products![0].title}");
+
+              //clear the cart
+              widget.cartData.clearCart;
+
+              setState(() {
+                isLoading = false;
+              });
+              //push to orders screen
+              Navigator.of(context).pushNamed("/orderDetails");
+            },
     );
   }
 }
