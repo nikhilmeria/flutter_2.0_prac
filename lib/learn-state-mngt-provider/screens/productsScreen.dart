@@ -29,10 +29,11 @@ class _ProductsScreenState extends State<ProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("inside product screen");
     ProductProvider productsData =
         Provider.of<ProductProvider>(context, listen: true);
     final productItems = productsData.products;
-    print(productItems.map((e) => e.price));
+
     // final idData = productsData.findById(productItems[1].id!);
     // print("idData = ${idData.description}");
 
@@ -43,7 +44,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
             ),
           )
         : productItems.length == 0
-            ? Center(child: Text('NO Products in DB'))
+            ? Center(child: Text('No Products in the DB'))
             : GridView.builder(
                 padding: const EdgeInsets.all(10.0),
                 itemCount: productItems.length,

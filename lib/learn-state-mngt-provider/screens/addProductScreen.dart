@@ -55,8 +55,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
     });
     _formKey.currentState!.save();
     print("_saveForm 1 => ${newProduct.title}");
-    print("_saveForm 2 => ${newProduct.price}");
-    print("_saveForm 3 => ${newProduct.description}");
+    print("_saveForm 2 => ${newProduct.description}");
+    print("_saveForm 3 => ${newProduct.price}");
     print("_saveForm 4 => ${newProduct.imageUrl}");
 
     Provider.of<ProductProvider>(context, listen: false)
@@ -217,6 +217,3 @@ class _AddProductScreenState extends State<AddProductScreen> {
     );
   }
 }
-
-//https://cdn.mos.cms.futurecdn.net/ec962d910de5801abc4812400ebfadda-1200-80.jpg
-//https://cdn.vox-cdn.com/thumbor/Vgy3FfpWvBD32CYZrcNq6itGqnw=/1400x1400/filters:format(png)/cdn.vox-cdn.com/uploads/chorus_asset/file/20034840/ishMfuW.png
