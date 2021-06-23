@@ -17,15 +17,16 @@ class ProductProvider with ChangeNotifier {
           "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/products.json");
 
       final resp = await http.get(url);
-      final fetchProducts = json.decode(resp.body);
+      Map<String, dynamic>? fetchProducts = json.decode(resp.body);
+      //  final fetchProducts = json.decode(resp.body);
       final List<Product> tempList = [];
 
-      if (fetchProducts.runtimeType == Null) {
+      if (fetchProducts == null) {
         //We hv no products in the DB.
         _products = [];
         notifyListeners();
       } else {
-        final fetchProducts = json.decode(resp.body) as Map<String, dynamic>;
+        // final fetchProducts = json.decode(resp.body) as Map<String, dynamic>;
         fetchProducts.forEach((key, value) {
           tempList.add(Product(
             id: key,

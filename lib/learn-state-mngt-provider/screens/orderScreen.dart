@@ -9,6 +9,11 @@ class OrderScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     OrderProvider orderObj = Provider.of<OrderProvider>(context);
     OrderProvider orderData = orderObj;
+    double? total = 0;
+    orderData.orderItem.map((ei) {
+      print("OrderScreen => ${ei.total}");
+      if (total == 0) total = ei.total;
+    }).toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -31,7 +36,7 @@ class OrderScreen extends StatelessWidget {
                   ),
                   Spacer(),
                   Text(
-                    "\$ ${orderData.orderItem[0].total}",
+                    "\$ $total",
                     style: TextStyle(fontSize: 20),
                   ),
                   TextButton(
@@ -41,9 +46,7 @@ class OrderScreen extends StatelessWidget {
                         color: Colors.black87,
                       ),
                     ),
-                    onPressed: () {
-                      //
-                    },
+                    onPressed: () {},
                   ),
                 ],
               ),
