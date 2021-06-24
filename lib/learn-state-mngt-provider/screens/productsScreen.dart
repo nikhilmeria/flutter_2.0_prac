@@ -25,7 +25,7 @@ class _ProductsScreenState extends State<ProductsScreen> {
               })
             });
     super.initState();
-  } // do not use async/await in life cycle methods. bcoz they cant handle futures, use then and catch.
+  } // do not use async/await in life cycle methods. bcoz they cant handle futures as they return void data type, use then and catch.
 
   @override
   Widget build(BuildContext context) {

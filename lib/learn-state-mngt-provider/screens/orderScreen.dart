@@ -1,3 +1,4 @@
+import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/order_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/widgets/app_drawer.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/widgets/order_item.dart';
@@ -36,7 +37,7 @@ class OrderScreen extends StatelessWidget {
                   ),
                   Spacer(),
                   Text(
-                    "\$ $total",
+                    "\$ ${orderData.getOrderTotal}",
                     style: TextStyle(fontSize: 20),
                   ),
                   TextButton(
@@ -46,7 +47,13 @@ class OrderScreen extends StatelessWidget {
                         color: Colors.black87,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      //clear the cart
+                      Provider.of<CartProvider>(context, listen: false)
+                          .clearCart;
+
+                      //TODO: add the order details in order db here
+                    },
                   ),
                 ],
               ),

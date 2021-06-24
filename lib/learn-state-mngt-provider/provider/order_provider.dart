@@ -13,11 +13,11 @@ class OrderProvider with ChangeNotifier {
   }
 
   double get getOrderTotal {
-    double? tempTotal;
+    double tempTotal = 0.0;
     _orderItem.forEach((ei) {
-      tempTotal = ei.total;
+      tempTotal += ei.total!;
     });
-    return tempTotal!;
+    return double.parse(tempTotal.toStringAsFixed(2)); //1
   }
 
   Future<void> addOrder(List<Cart> cartItems, double total) async {
@@ -63,3 +63,6 @@ class OrderProvider with ChangeNotifier {
     }
   }
 }
+
+//
+//1. "toStringAsFixed" sets 2 decimal places to a double.

@@ -96,9 +96,6 @@ class _OrderButtonState extends State<OrderButton> {
               // print(
               //     "OrderDetails => ${Provider.of<OrderProvider>(context, listen: false).orderItem[0].products![0].title}");
 
-              //clear the cart
-              widget.cartData.clearCart;
-
               setState(() {
                 isLoading = false;
               });
