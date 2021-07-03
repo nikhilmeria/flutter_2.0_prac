@@ -2,3 +2,4 @@ if you face prob using .of(context) in function which returns a future, than chk
 if we have a common code to be executed after whether code in try block is executed or catch block than we put that code in a finally block.
 catch block can b4 than block if we want to do something with the promise thqat is returned from catch block.
 if we use async with a fn than the fn by default returns a future.
+when working with future data instead of using initState in stateful widget to fetch data, use futurebuilder and than we can use stateLESS widget and keep the file lean 

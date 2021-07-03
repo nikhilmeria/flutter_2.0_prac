@@ -11,6 +11,7 @@ class ProductsScreen extends StatelessWidget {
     ProductProvider productsData =
         Provider.of<ProductProvider>(context, listen: false);
 
+    // for "FutureBuilder" see video no 262
     return FutureBuilder(
       future: productsData.fetchProductsFromDB(),
       builder: (ctx, dataSnapshot) {
@@ -27,23 +28,25 @@ class ProductsScreen extends StatelessWidget {
             );
           } else {
             final productItems = productsData.products;
-            return GridView.builder(
-              padding: const EdgeInsets.all(10.0),
-              itemCount: productItems.length,
-              itemBuilder: (ctx, index) => ProductItem(
-                productItems[index].id,
-                productItems[index].title,
-                productItems[index].price,
-                productItems[index].imageUrl,
-                productItems[index].description,
-              ),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 3 / 2,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 10,
-              ),
-            );
+            return productItems.length == 0
+                ? Center(child: Text('No Products in the DB'))
+                : GridView.builder(
+                    padding: const EdgeInsets.all(10.0),
+                    itemCount: productItems.length,
+                    itemBuilder: (ctx, index) => ProductItem(
+                      productItems[index].id,
+                      productItems[index].title,
+                      productItems[index].price,
+                      productItems[index].imageUrl,
+                      productItems[index].description,
+                    ),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 3 / 2,
+                      crossAxisSpacing: 10,
+                      mainAxisSpacing: 10,
+                    ),
+                  );
           }
         } //else
       }, // builder

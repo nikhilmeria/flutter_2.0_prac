@@ -41,7 +41,7 @@ class ProductProvider with ChangeNotifier {
       }
       //
     } catch (err) {
-      print("Error in get => ${err.toString()}");
+      print("Error in fetchProductsFromDB => ${err.toString()}");
       throw err;
     }
   }
