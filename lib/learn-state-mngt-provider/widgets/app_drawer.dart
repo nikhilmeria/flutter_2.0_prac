@@ -22,7 +22,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.shopping_cart),
             title: Text('Cart'),
             onTap: () {
-              Navigator.of(context).pushReplacementNamed("/cartDetails");
+              Navigator.of(context).pushNamed("/cartDetails");
             },
           ),
           Divider(),

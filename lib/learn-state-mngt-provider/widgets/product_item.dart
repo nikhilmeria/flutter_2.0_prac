@@ -24,50 +24,81 @@ class ProductItem extends StatelessWidget {
           "description": description,
         });
       },
-      child: GridTile(
-        child: Image.network(
-          imageUrl!,
-          fit: BoxFit.cover,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(15.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 3.0,
+              blurRadius: 5.0,
+            )
+          ],
+          color: Colors.white,
         ),
-        footer: ClipRRect(
-          borderRadius: BorderRadius.circular(20.0),
-          child: GridTileBar(
-            leading: IconButton(
-              onPressed: () {},
-              icon: Icon(
-                Icons.favorite,
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(
+                    Icons.favorite_border,
+                    color: Color(0xFFEF7532),
+                  ),
+                ],
               ),
             ),
-            backgroundColor: Colors.black54,
-            title: Text(
+            Hero(
+              tag: 'assets/plate1.png',
+              child: Container(
+                height: 125.0,
+                width: 1055.0,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/plate1.png'),
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(height: 15.0),
+            Text(
               title!,
               style: TextStyle(
-                fontSize: 20.0,
+                color: Color(0xFF575E67),
+                fontSize: 18.0,
               ),
-              textAlign: TextAlign.center,
             ),
-            trailing: IconButton(
-              onPressed: () {
-                print("cartData  values => $price =  $title ");
-                cartData.addItemToCart(id!, price!, title!);
-                ScaffoldMessenger.of(context).clearSnackBars();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'Product added to cart ...',
-                      style: TextStyle(
-                        fontSize: 15.0,
-                      ),
+            Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Container(
+                color: Color(0xFFEBEBEB),
+                height: 5.0,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 5.0, right: 5.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.explore,
+                    color: Color(0xFFD17E50),
+                    size: 12.0,
+                  ),
+                  Text(
+                    ' Explore Store',
+                    style: TextStyle(
+                      color: Color(0xFFD17E50),
+                      fontSize: 15.0,
                     ),
                   ),
-                );
-              },
-              icon: Icon(
-                Icons.shopping_cart,
+                ],
               ),
-              color: Theme.of(context).accentColor,
             ),
-          ),
+          ],
         ),
       ),
     );

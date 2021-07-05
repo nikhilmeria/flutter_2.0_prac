@@ -11,11 +11,16 @@ import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/productDetailsS
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    systemNavigationBarColor: Color(0x000000), // navigation bar color
+    statusBarColor: Color(0xFF21BFBD), // status bar color
+  ));
   runApp(
     MultiProvider(
       providers: [

@@ -31,7 +31,7 @@ class ProductsScreen extends StatelessWidget {
             return productItems.length == 0
                 ? Center(child: Text('No Products in the DB'))
                 : GridView.builder(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.all(40.0),
                     itemCount: productItems.length,
                     itemBuilder: (ctx, index) => ProductItem(
                       productItems[index].id,
@@ -42,12 +42,12 @@ class ProductsScreen extends StatelessWidget {
                     ),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      childAspectRatio: 3 / 2,
-                      crossAxisSpacing: 10,
+                      childAspectRatio: 1.8 / 2,
+                      crossAxisSpacing: 20,
                       mainAxisSpacing: 10,
                     ),
                   );
-          }
+          } //else
         } //else
       }, // builder
     );
