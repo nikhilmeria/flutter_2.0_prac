@@ -51,13 +51,13 @@ class ProductItem extends StatelessWidget {
               ),
             ),
             Hero(
-              tag: 'assets/plate1.png',
+              tag: '$id',
               child: Container(
                 height: 125.0,
                 width: 1055.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/plate1.png'),
+                    image: AssetImage('assets/cookiemint.jpg'),
                     fit: BoxFit.contain,
                   ),
                 ),

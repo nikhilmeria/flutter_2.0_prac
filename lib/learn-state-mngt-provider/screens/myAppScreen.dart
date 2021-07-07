@@ -88,7 +88,7 @@ class MyAppScreen extends StatelessWidget {
               height: MediaQuery.of(context).size.height - 175.0,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(75.0)),
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(55.0)),
               ),
               child: ProductsScreen(),
             ),
