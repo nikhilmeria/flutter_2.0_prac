@@ -1,6 +1,4 @@
-import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
   final String? id;
@@ -12,12 +10,10 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CartProvider cartObj = Provider.of<CartProvider>(context, listen: false);
-    CartProvider cartData = cartObj;
-
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed("/productDetails", arguments: {
+          "id": id,
           "title": title,
           "price": price,
           "imageUrl": imageUrl,
