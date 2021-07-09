@@ -1,6 +1,6 @@
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
-import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/order_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/widgets/cart_item.dart';
+import 'package:coffee_shop_ui/learn-state-mngt-provider/widgets/order_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,35 +12,19 @@ class CartScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cart Details'),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text('My Cart '),
         centerTitle: true,
+        backgroundColor: Color(0xFF21BFBD),
       ),
       body: Column(
         children: <Widget>[
-          Card(
-            margin: EdgeInsets.all(15),
-            child: Padding(
-              padding: EdgeInsets.all(8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Chip(
-                    label: Text(
-                      'Total',
-                    ),
-                  ),
-                  Spacer(),
-                  Text(
-                    "\$ ${cartData.getTotal}",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  OrderButton(cartData: cartData),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
-          Expanded(
+          Flexible(
             child: ListView.builder(
               itemCount: cartData.cartItem.length,
               itemBuilder: (ctx, index) => CartItem(
@@ -52,57 +36,42 @@ class CartScreen extends StatelessWidget {
               ),
             ),
           ),
-        ],
-      ),
-    );
-  }
-}
-
-class OrderButton extends StatefulWidget {
-  const OrderButton({
-    Key? key,
-    required this.cartData,
-  }) : super(key: key);
-
-  final CartProvider cartData;
-
-  @override
-  _OrderButtonState createState() => _OrderButtonState();
-}
-
-class _OrderButtonState extends State<OrderButton> {
-  bool isLoading = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      child: isLoading
-          ? CircularProgressIndicator()
-          : Text(
-              'ORDER NOW',
-              style: TextStyle(
-                color: Colors.black87,
+          SizedBox(height: 10),
+          Card(
+            margin: EdgeInsets.all(15),
+            child: Padding(
+              padding: EdgeInsets.all(8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Chip(
+                    backgroundColor: Colors.grey[300],
+                    elevation: 3.0,
+                    label: Text(
+                      'Total',
+                      style: TextStyle(
+                        fontSize: 26,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ),
+                  Spacer(),
+                  Text(
+                    "\$ ${cartData.getTotal}",
+                    style: TextStyle(
+                      fontSize: 26,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  OrderButton(cartData: cartData),
+                ],
               ),
             ),
-      onPressed: widget.cartData.getTotal <= 0 || isLoading == true
-          ? null
-          : () {
-              setState(() {
-                isLoading = true;
-              });
-              Provider.of<OrderProvider>(context, listen: false).addOrder(
-                  widget.cartData.cartItem.values.toList(),
-                  widget.cartData.getTotal);
-
-              // print(
-              //     "OrderDetails => ${Provider.of<OrderProvider>(context, listen: false).orderItem[0].products![0].title}");
-
-              setState(() {
-                isLoading = false;
-              });
-              //push to orders screen
-              Navigator.of(context).pushNamed("/orderDetails");
-            },
+          ),
+        ],
+      ),
     );
   }
 }

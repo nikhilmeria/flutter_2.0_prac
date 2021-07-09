@@ -9,7 +9,7 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
-  int quantity = 3;
+  int quantity = 1;
 
   void handleQuantity() {
     if (quantity > 1) {
@@ -19,12 +19,30 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
+  void handleAddToCart(CartProvider cartData, String id, String title,
+      double price, int quantity) {
+    cartData.addItemToCart(id, price, title, quantity);
+    ScaffoldMessenger.of(context).clearSnackBars();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Product added to cart ...',
+          style: TextStyle(
+            fontSize: 15.0,
+          ),
+        ),
+      ),
+    );
+    Navigator.of(context).popAndPushNamed('/productScreen');
+  }
+
   @override
   Widget build(BuildContext context) {
     final routeArgs =
         ModalRoute.of(context)?.settings.arguments as Map<String, Object?>;
     final productPrice = routeArgs["price"];
     double? price = productPrice as double; // price with quantity
+    price = price * quantity;
 
     CartProvider cartObj = Provider.of<CartProvider>(context, listen: false);
     CartProvider cartData = cartObj;
@@ -162,6 +180,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                               decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(.7),
+                                    offset: Offset(0, -1),
+                                    blurRadius: 12.0,
+                                  ),
+                                ],
                               ),
                               child: Center(
                                 child: Text(
@@ -252,7 +277,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   ),
                                 ),
                                 Text(
-                                  '\$${price * quantity}',
+                                  '\$$price',
                                   style: TextStyle(
                                     fontSize: 30,
                                     fontWeight: FontWeight.bold,
@@ -266,20 +291,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             color: Color.fromRGBO(243, 175, 45, 1),
                             borderRadius: BorderRadius.circular(10.0),
                             child: InkWell(
-                              onTap: () {
-                                cartData.addItemToCart(id!, price!, title!);
-                                ScaffoldMessenger.of(context).clearSnackBars();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Product added to cart ...',
-                                      style: TextStyle(
-                                        fontSize: 15.0,
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }, //onTap
+                              onTap: () => handleAddToCart(
+                                cartData,
+                                routeArgs["id"].toString(),
+                                routeArgs["title"].toString(),
+                                price!,
+                                quantity,
+                              ),
                               child: Container(
                                 padding: const EdgeInsets.symmetric(
                                   vertical: 10,

@@ -19,6 +19,8 @@ class CartItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("cart_item  => $quantity = $price");
+
     return Dismissible(
       key: ValueKey(id),
       direction: DismissDirection.endToStart,
@@ -48,20 +50,38 @@ class CartItem extends StatelessWidget {
           child: ListTile(
             leading: CircleAvatar(
               child: Padding(
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.all(3),
                 child: FittedBox(
                   child: Text(
-                    '\$$price',
+                    '\$${(price / quantity)}',
                     style: TextStyle(
-                      color: Colors.white70,
+                      color: Colors.white,
+                      fontSize: 20.0,
                     ),
                   ),
                 ),
               ),
             ),
-            title: Text(title),
-            subtitle: Text('Total: \$${(price * quantity)}'),
-            trailing: Text('$quantity x'),
+            title: Text(
+              title,
+              style: TextStyle(
+                fontSize: 20.0,
+              ),
+            ),
+            subtitle: Text(
+              'Total : \$$price',
+              style: TextStyle(
+                color: Colors.black45,
+                fontSize: 15.0,
+              ),
+            ),
+            trailing: Text(
+              '$quantity x',
+              style: TextStyle(
+                color: Colors.black45,
+                fontSize: 20.0,
+              ),
+            ),
           ),
         ),
       ),

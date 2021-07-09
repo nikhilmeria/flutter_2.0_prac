@@ -14,17 +14,20 @@ class CartProvider with ChangeNotifier {
   }
 
   double get getTotal {
-    var total = 0.0;
+    double total = 0.0;
     _cartItem?.forEach((key, value) {
       print("getTotal  values => ${value.price} ");
-      total += value.price! * value.quantity!;
+      // total += value.price! * value.quantity!;
+      total += value.price!;
     });
 
-    return total;
+    return double.parse(total.toStringAsFixed(2)); //round a double to 2 digit
   }
 
-  void addItemToCart(String prodId, double price, String title) {
+  void addItemToCart(String prodId, double price, String title, int quantity) {
     //chk if the item being add, is already in the cart, if yes than we just increment the quantity count and dnt add a new item in the cart.
+
+    print("addItemToCart => $prodId = $price = $title");
 
     if (_cartItem!.containsKey(prodId)) {
       //we already hv the item in cart .than just update the quantity
@@ -45,7 +48,7 @@ class CartProvider with ChangeNotifier {
           id: DateTime.now().toString(),
           title: title,
           price: price,
-          quantity: 1,
+          quantity: quantity,
         ),
       );
       _cartItem?.forEach((key, value) {
