@@ -1,3 +1,4 @@
+import 'package:coffee_shop_ui/learn-state-mngt-provider/models/cart.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/order_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/widgets/app_drawer.dart';
@@ -6,22 +7,31 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OrderScreen extends StatelessWidget {
-  void handlePayment(BuildContext context) {
+  void handlePayment(BuildContext context, double total) {
     //clear the cart
     Provider.of<CartProvider>(context, listen: false).clearCart;
 
-    //TODO: add the order details in order db here
+    //adding  the order details in order db .
+    // Provider.of<OrderProvider>(context, listen: false)
+    //     .addOrderToDB(cartData.cartItem.values.toList(), total);
   }
 
   @override
   Widget build(BuildContext context) {
-    OrderProvider orderObj = Provider.of<OrderProvider>(context);
-    OrderProvider orderData = orderObj;
-    double? total = 0;
-    orderData.orderItem.map((ei) {
-      print("OrderScreen => ${ei.total}");
-      if (total == 0) total = ei.total;
-    }).toList();
+    // OrderProvider orderObj = Provider.of<OrderProvider>(context);
+    // OrderProvider orderData = orderObj;
+    // double? total = 0;
+    // orderData.orderItem.map((ei) {
+    //   print("OrderScreen => ${ei.total}");
+    //   if (total == 0) total = ei.total;
+    // }).toList();
+
+    CartProvider cartObj = Provider.of<CartProvider>(context, listen: false);
+    CartProvider cartData = cartObj;
+    final routeArgs = ModalRoute.of(context)!.settings.arguments as List<Cart>;
+    routeArgs.forEach((ei) {
+      print("orderScr => ${ei.price}");
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -29,14 +39,17 @@ class OrderScreen extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Color(0xFF21BFBD),
       ),
-      drawer: AppDrawer(),
+      drawer: InkWell(
+        onTap: () {},
+        child: AppDrawer(),
+      ),
       body: Column(
         children: <Widget>[
           Expanded(
             child: ListView.builder(
-              itemCount: orderData.orderItem.length,
+              itemCount: cartData.cartItem.length,
               itemBuilder: (ctx, index) => OrderItem(
-                orderData.orderItem[index],
+                cartData.cartItem,
               ),
             ),
           ),
@@ -62,7 +75,7 @@ class OrderScreen extends StatelessWidget {
                   ),
                   Spacer(),
                   Text(
-                    "\$ ${orderData.getOrderTotal}",
+                    "\$ ${cartData.getTotal}",
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
@@ -90,7 +103,7 @@ class OrderScreen extends StatelessWidget {
                         fontStyle: FontStyle.italic,
                       ),
                     ),
-                    onPressed: () => handlePayment(context),
+                    onPressed: () => handlePayment(context, cartData.getTotal),
                   ),
                 ],
               ),

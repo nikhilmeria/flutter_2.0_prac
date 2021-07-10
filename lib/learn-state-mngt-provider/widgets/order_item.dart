@@ -1,11 +1,12 @@
 import 'dart:math';
+import 'package:coffee_shop_ui/learn-state-mngt-provider/models/cart.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/models/order.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class OrderItem extends StatefulWidget {
-  final Order orderData;
+  final Map<String, Cart> orderData;
   OrderItem(this.orderData);
 
   @override
@@ -17,7 +18,9 @@ class _OrderItemState extends State<OrderItem> {
 
   @override
   Widget build(BuildContext context) {
-    print("order_item => ${widget.orderData.products!.length}");
+    widget.orderData.forEach((key, value) {
+      print("order_item => $key = ${value.title}");
+    });
 
     return Card(
       margin: EdgeInsets.all(10.0),
@@ -33,8 +36,7 @@ class _OrderItemState extends State<OrderItem> {
               ),
             ),
             subtitle: Text(
-              DateFormat("dd/MM/yyyy - hh:mm")
-                  .format(widget.orderData.dateAndTime!),
+              DateFormat("dd/MM/yyyy - hh:mm").format(DateTime.now()),
               style: TextStyle(
                 fontSize: 26,
                 fontWeight: FontWeight.bold,
@@ -55,10 +57,9 @@ class _OrderItemState extends State<OrderItem> {
           _isExpanded
               ? Container(
                   margin: EdgeInsets.all(10.0),
-                  height:
-                      min(widget.orderData.products!.length * 20.0 + 100, 180),
+                  height: min(widget.orderData.length * 20.0 + 100, 180),
                   child: ListView(
-                    children: widget.orderData.products!
+                    children: widget.orderData.values
                         .map(
                           (ei) => Column(
                             children: [

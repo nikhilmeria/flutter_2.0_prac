@@ -18,8 +18,8 @@ class _OrderButtonState extends State<OrderButton> {
     setState(() {
       isLoading = true;
     });
-    Provider.of<OrderProvider>(context, listen: false).addOrder(
-        widget.cartData.cartItem.values.toList(), widget.cartData.getTotal);
+    // Provider.of<OrderProvider>(context, listen: false).addOrderToDB(
+    //     widget.cartData.cartItem.values.toList(), widget.cartData.getTotal);
 
     // print(
     //     "OrderDetails => ${Provider.of<OrderProvider>(context, listen: false).orderItem[0].products![0].title}");
@@ -28,7 +28,8 @@ class _OrderButtonState extends State<OrderButton> {
       isLoading = false;
     });
     //push to orders screen
-    Navigator.of(context).pushNamed("/orderDetails");
+    Navigator.of(context).pushNamed("/orderDetails",
+        arguments: widget.cartData.cartItem.values.toList());
   }
 
   @override

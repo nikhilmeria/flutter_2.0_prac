@@ -20,7 +20,7 @@ class OrderProvider with ChangeNotifier {
     return double.parse(tempTotal.toStringAsFixed(2)); //1
   }
 
-  Future<void> addOrder(List<Cart> cartItems, double total) async {
+  Future<void> addOrderToDB(List<Cart> cartItems, double total) async {
     // adding new order to firebase database
     final url = Uri.parse(
         "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json");
@@ -61,7 +61,10 @@ class OrderProvider with ChangeNotifier {
       print("Error in addOrder  => ${err.toString()}");
       throw err;
     }
-  }
+  } //addOrder
+
+  //clear order data
+
 }
 
 //
