@@ -22,8 +22,8 @@ class MyAppScreen extends StatelessWidget {
         actions: [
           Consumer(
             builder: (_, CartProvider cartData, Widget? child) => Badge(
-              value: cartData.cartCount.toString(),
               child: child,
+              cartData: cartData,
             ),
             child: IconButton(
               onPressed: () {
@@ -88,7 +88,9 @@ class MyAppScreen extends StatelessWidget {
               height: MediaQuery.of(context).size.height - 175.0,
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.only(topLeft: Radius.circular(55.0)),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(55.0),
+                ),
               ),
               child: ProductsScreen(),
             ),

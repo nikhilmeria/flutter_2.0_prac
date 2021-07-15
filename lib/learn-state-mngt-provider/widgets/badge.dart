@@ -1,22 +1,36 @@
+import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
 import 'package:flutter/material.dart';
 
-class Badge extends StatelessWidget {
+class Badge extends StatefulWidget {
   final Widget? child;
-  final String? value;
   final Color? color;
+  final CartProvider cartData;
 
   const Badge({
     @required this.child,
-    @required this.value,
     this.color,
+    required this.cartData,
   });
 
   @override
+  _BadgeState createState() => _BadgeState();
+}
+
+class _BadgeState extends State<Badge> {
+  @override
+  void initState() {
+    widget.cartData.fetchProductsFromCartDB();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    int cartCount = widget.cartData.cartCount;
+
     return Stack(
       alignment: Alignment.center,
       children: [
-        child!,
+        widget.child!,
         Positioned(
           right: 8,
           top: 8,
@@ -25,14 +39,16 @@ class Badge extends StatelessWidget {
             // color: Theme.of(context).accentColor,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
-              color: color != null ? color : Theme.of(context).accentColor,
+              color: widget.color != null
+                  ? widget.color
+                  : Theme.of(context).accentColor,
             ),
             constraints: BoxConstraints(
               minWidth: 16,
               minHeight: 16,
             ),
             child: Text(
-              value!,
+              "$cartCount",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 10,

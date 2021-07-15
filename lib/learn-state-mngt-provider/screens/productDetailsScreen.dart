@@ -11,6 +11,17 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int quantity = 1;
 
+  // @override
+  // void initState() {
+  //   print("in badge ");
+  //   CartProvider cartObj = Provider.of<CartProvider>(context, listen: false);
+  //   CartProvider cartData = cartObj;
+  //   cartData
+  //       .fetchProductsFromCartDB()
+  //       .then((value) => print("got  badge data "));
+  //   super.initState();
+  // }
+
   void handleQuantity() {
     if (quantity > 1) {
       setState(() {
@@ -19,9 +30,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
-  void handleAddToCart(CartProvider cartData, String id, String title,
-      double price, int quantity) {
-    cartData.addItemToCart(id, price, title, quantity);
+  void handleAddToCart(CartProvider cartData, String prodId, String title,
+      double price, int quantity) async {
+    await cartData.addItemToCartDB(prodId, price, title, quantity);
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
