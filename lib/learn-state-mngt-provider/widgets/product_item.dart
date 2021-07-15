@@ -53,7 +53,7 @@ class ProductItem extends StatelessWidget {
                 width: 1055.0,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage('assets/cookiemint.jpg'),
+                    image: NetworkImage(imageUrl!),
                     fit: BoxFit.contain,
                   ),
                 ),

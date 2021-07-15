@@ -11,17 +11,6 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   int quantity = 1;
 
-  // @override
-  // void initState() {
-  //   print("in badge ");
-  //   CartProvider cartObj = Provider.of<CartProvider>(context, listen: false);
-  //   CartProvider cartData = cartObj;
-  //   cartData
-  //       .fetchProductsFromCartDB()
-  //       .then((value) => print("got  badge data "));
-  //   super.initState();
-  // }
-
   void handleQuantity() {
     if (quantity > 1) {
       setState(() {
