@@ -21,7 +21,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   void handleAddToCart(CartProvider cartData, String prodId, String title,
       double price, int quantity) async {
-    await cartData.addItemToCartDB(prodId, price, title, quantity);
+    await cartData.addItemToCartDB(prodId, price / quantity, title, quantity);
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

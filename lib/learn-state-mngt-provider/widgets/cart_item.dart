@@ -53,7 +53,7 @@ class CartItem extends StatelessWidget {
                 padding: EdgeInsets.all(3),
                 child: FittedBox(
                   child: Text(
-                    '\$${(price / quantity)}',
+                    '\$$price',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
@@ -69,7 +69,7 @@ class CartItem extends StatelessWidget {
               ),
             ),
             subtitle: Text(
-              'Total : \$$price',
+              'Total : \$${(price * quantity)}',
               style: TextStyle(
                 color: Colors.black45,
                 fontSize: 15.0,

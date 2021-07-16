@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 
 class CartProvider with ChangeNotifier {
   Map<String, Cart>? _cartItem = {};
-  Map<String, dynamic>? fetchProducts;
 
   Map<String, Cart> get cartItem {
     return {..._cartItem!};
@@ -21,7 +20,7 @@ class CartProvider with ChangeNotifier {
     double total = 0.0;
     _cartItem?.forEach((key, value) {
       print("getTotal  values => ${value.price} ");
-      total += value.price!;
+      total += value.price! * value.quantity!;
     });
 
     return double.parse(total.toStringAsFixed(2)); //round a double to 2 digit
@@ -30,57 +29,60 @@ class CartProvider with ChangeNotifier {
   Future<void> addItemToCartDB(
       String prodId, double price, String title, int quantity) async {
     //chk if the item being add, is already in the cart, if yes than we just increment the quantity count and dnt add a new item in the cart.
-    String cartItemID = "";
-
-    if (fetchProducts?.length != 0) {
-      fetchProducts?.forEach((key, value) {
-        print("test  => $key  and $value ");
-        if (value["id"] == key) {
-          cartItemID = key;
-        }
-        print("cartItemID => $key  and $cartItemID ");
-      });
-    }
+    String cartDBId = "";
+    var oldQuantity;
+    print(
+        "addItemToCart => $prodId = $price = $title = $quantity & length = ${_cartItem!.length}");
 
     if (_cartItem!.containsKey(prodId)) {
       //we already hv the item in cart .than just update the quantity
       print("addItemToCart in if length => ${_cartItem!.length}");
 
-      final url = Uri.parse(
-          "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json");
+      _cartItem!.forEach((key, value) {
+        print("id chk => $key = ${value.id}");
+        if (prodId == key) {
+          cartDBId = value.id!;
+          oldQuantity = value.quantity!;
+        }
+      });
 
+      print("cartDBId & oldQuantity  => $cartDBId = $oldQuantity");
+
+      final url = Uri.parse(
+          "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart/$cartDBId.json");
+
+      print("url  => $url");
       try {
-        final resp = await http.put(
+        await http.patch(
           url,
           body: json.encode({
-            "product": prodId,
-            "price": price,
-            "title": title,
-            "quantity": quantity,
+            'quantity': oldQuantity + quantity, // we only update the quantity
           }),
         );
+        print("update to product in cart db done!!!");
 
-        print("addItemToCartDB if resp => $resp");
+        // updating cart entry in local app state
+        _cartItem?.update(
+          prodId,
+          (existingValueOfTheKey) => Cart(
+            id: existingValueOfTheKey.id,
+            title: existingValueOfTheKey.title,
+            quantity: existingValueOfTheKey.quantity! + quantity,
+            price: existingValueOfTheKey.price!,
+          ),
+        );
+        notifyListeners();
       } catch (err) {
-        print("Error while adding product to cart => ${err.toString()}");
+        print("Error while updating product in cartDB => ${err.toString()}");
         throw err;
       }
-      // _cartItem?.update(
-      //   prodId,
-      //   (existingValueOfTheKey) => Cart(
-      //     id: existingValueOfTheKey.id,
-      //     title: existingValueOfTheKey.title,
-      //     quantity: existingValueOfTheKey.quantity! + quantity,
-      //     price: existingValueOfTheKey.price! + (price * quantity),
-      //   ),
-      // );
     } else {
       // first add product to cart DB
       final url = Uri.parse(
           "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json");
 
       try {
-        final resp = await http.post(
+        await http.post(
           url,
           body: json.encode({
             "product": prodId,
@@ -89,26 +91,12 @@ class CartProvider with ChangeNotifier {
             "quantity": quantity,
           }),
         );
-
-        print("addItemToCartDB resp => $resp");
-
-        //add new entry in the cart for internal use.
-        // _cartItem?.putIfAbsent(
-        //   prodId,
-        //   () => Cart(
-        //     id: DateTime.now().toString(),
-        //     title: title,
-        //     price: price,
-        //     quantity: quantity,
-        //   ),
-        // );
+        notifyListeners();
       } catch (err) {
         print("Error while adding product to cart => ${err.toString()}");
         throw err;
       }
     }
-
-    notifyListeners();
   } // addItemToCartDB
 
   Future<void> fetchProductsFromCartDB() async {
@@ -117,7 +105,7 @@ class CartProvider with ChangeNotifier {
           "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json");
 
       final resp = await http.get(url);
-      fetchProducts = json.decode(resp.body);
+      Map<String, dynamic>? fetchProducts = json.decode(resp.body);
 
       if (fetchProducts == null) {
         //We hv no products in the Cart DB.
@@ -126,12 +114,12 @@ class CartProvider with ChangeNotifier {
         notifyListeners();
       } else {
         print("products found in cart db");
-        fetchProducts!.forEach((key, value) {
+        fetchProducts.forEach((key, value) {
           print("fetchProducts => $key = $value");
           _cartItem!.putIfAbsent(
               value["product"],
               () => Cart(
-                    id: value["product"],
+                    id: key, //id: value["product"]  // change 1
                     title: value["title"],
                     quantity: value["quantity"],
                     price: value["price"],
@@ -139,7 +127,8 @@ class CartProvider with ChangeNotifier {
         });
 
         _cartItem!.forEach((key, value) {
-          print("_cartItem from Cart DB => $key = ${value.id}");
+          print(
+              "_cartItem from Cart DB => $key = ${value.id} = ${value.title}");
         });
 
         notifyListeners();
@@ -160,3 +149,10 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   } // clear the cart after an order has been placed.
 }
+
+// Cart(
+//                 id: value.id,
+//                 title: value.title,
+//                 quantity: value.quantity,
+//                 price: value.price,
+//             )

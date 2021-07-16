@@ -9,6 +9,7 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     CartProvider cartObj = Provider.of<CartProvider>(context);
     CartProvider cartData = cartObj;
+    print("carttttt => ${cartData.cartItem.length}");
 
     return Scaffold(
       appBar: AppBar(
@@ -27,13 +28,24 @@ class CartScreen extends StatelessWidget {
           Flexible(
             child: ListView.builder(
               itemCount: cartData.cartItem.length,
-              itemBuilder: (ctx, index) => CartItem(
-                cartData.cartItem.values.toList()[index].id!,
-                cartData.cartItem.keys.toList()[index],
-                cartData.cartItem.values.toList()[index].price!,
-                cartData.cartItem.values.toList()[index].quantity!,
-                cartData.cartItem.values.toList()[index].title!,
-              ),
+              itemBuilder: (ctx, index) => cartData.cartItem.length == 0
+                  ? Container(
+                      height: 50.0,
+                      width: 50.0,
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                          image: AssetImage('assets/emptycart.png'),
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    )
+                  : CartItem(
+                      cartData.cartItem.values.toList()[index].id!,
+                      cartData.cartItem.keys.toList()[index],
+                      cartData.cartItem.values.toList()[index].price!,
+                      cartData.cartItem.values.toList()[index].quantity!,
+                      cartData.cartItem.values.toList()[index].title!,
+                    ),
             ),
           ),
           SizedBox(height: 10),
