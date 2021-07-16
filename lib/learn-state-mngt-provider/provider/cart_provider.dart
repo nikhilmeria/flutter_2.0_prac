@@ -139,9 +139,32 @@ class CartProvider with ChangeNotifier {
     }
   } //fetchProductsFromCartDB
 
-  void removeItemFromCart(String prodId) {
-    _cartItem?.remove(prodId);
-    notifyListeners();
+  void removeItemFromCart(String prodId) async {
+    // first remove item from cart DB
+    var cartDBId;
+    _cartItem!.forEach((key, value) {
+      print("id in remove => $key = ${value.id}");
+      if (prodId == key) {
+        cartDBId = value.id!;
+      }
+    });
+    print("removeItemFromCart cartDBId  => $cartDBId ");
+
+    final url = Uri.parse(
+        "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart/$cartDBId.json");
+
+    print("remove url  => $url");
+    try {
+      await http.delete(url);
+      print("delete to product in cart db done!!!");
+
+      // than remove from local app state
+      _cartItem?.remove(prodId);
+      notifyListeners();
+    } catch (err) {
+      print("Error while deleting product in cartDB => ${err.toString()}");
+      throw err;
+    }
   }
 
   void get clearCart {
@@ -149,10 +172,3 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
   } // clear the cart after an order has been placed.
 }
-
-// Cart(
-//                 id: value.id,
-//                 title: value.title,
-//                 quantity: value.quantity,
-//                 price: value.price,
-//             )
