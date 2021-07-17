@@ -7,13 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OrderScreen extends StatelessWidget {
-  void handlePayment(BuildContext context, double total) {
+  void handlePayment(BuildContext context, CartProvider cartData) async {
+    //adding  the order details in order db .
+    await Provider.of<OrderProvider>(context, listen: false)
+        .addOrderToDB(cartData.cartItem.values.toList(), cartData.getTotal);
+
     //clear the cart
     Provider.of<CartProvider>(context, listen: false).clearCart;
-
-    //adding  the order details in order db .
-    // Provider.of<OrderProvider>(context, listen: false)
-    //     .addOrderToDB(cartData.cartItem.values.toList(), total);
   }
 
   @override
@@ -28,6 +28,7 @@ class OrderScreen extends StatelessWidget {
 
     CartProvider cartObj = Provider.of<CartProvider>(context, listen: false);
     CartProvider cartData = cartObj;
+    print("Order Length => ${cartData.cartItem.length}");
     final routeArgs = ModalRoute.of(context)!.settings.arguments as List<Cart>;
     routeArgs.forEach((ei) {
       print("orderScr => ${ei.price}");
@@ -46,11 +47,8 @@ class OrderScreen extends StatelessWidget {
       body: Column(
         children: <Widget>[
           Expanded(
-            child: ListView.builder(
-              itemCount: cartData.cartItem.length,
-              itemBuilder: (ctx, index) => OrderItem(
-                cartData.cartItem,
-              ),
+            child: OrderItem(
+              cartData.cartItem,
             ),
           ),
           SizedBox(height: 10),
@@ -103,7 +101,7 @@ class OrderScreen extends StatelessWidget {
                         fontStyle: FontStyle.italic,
                       ),
                     ),
-                    onPressed: () => handlePayment(context, cartData.getTotal),
+                    onPressed: () => handlePayment(context, cartData),
                   ),
                 ],
               ),

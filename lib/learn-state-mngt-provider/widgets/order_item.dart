@@ -1,6 +1,4 @@
-import 'dart:math';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/models/cart.dart';
-import 'package:coffee_shop_ui/learn-state-mngt-provider/models/order.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -19,7 +17,7 @@ class _OrderItemState extends State<OrderItem> {
   @override
   Widget build(BuildContext context) {
     widget.orderData.forEach((key, value) {
-      print("order_item => $key = ${value.title}");
+      print(" order Data chk => $key = $value");
     });
 
     return Card(
@@ -57,7 +55,8 @@ class _OrderItemState extends State<OrderItem> {
           _isExpanded
               ? Container(
                   margin: EdgeInsets.all(10.0),
-                  height: min(widget.orderData.length * 20.0 + 100, 180),
+                  height:
+                      150.0, //min(widget.orderData.length * 20.0 + 100, 180),
                   child: ListView(
                     children: widget.orderData.values
                         .map(

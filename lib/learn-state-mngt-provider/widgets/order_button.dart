@@ -1,7 +1,5 @@
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
-import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/order_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class OrderButton extends StatefulWidget {
   final CartProvider cartData;

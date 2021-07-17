@@ -27,7 +27,7 @@ class OrderProvider with ChangeNotifier {
     final timeStamp = DateTime.now();
 
     try {
-      final resp = await http.post(
+      await http.post(
         url,
         body: json.encode(
           {
@@ -44,17 +44,7 @@ class OrderProvider with ChangeNotifier {
           },
         ),
       );
-      print("addOrder resp => ${resp.body}");
-      _orderItem.insert(
-          0,
-          Order(
-            id: json.decode(resp.body)['name'],
-            total: total,
-            dateAndTime: timeStamp,
-            products: cartItems,
-          ));
 
-      print(orderItem);
       notifyListeners();
       //
     } catch (err) {
@@ -63,9 +53,21 @@ class OrderProvider with ChangeNotifier {
     }
   } //addOrder
 
-  //clear order data
+  Future<void> fetchOrderData() async {
+    // users wants to see past orders, than we can fetch it from order db.
 
+    //following code will be used to add update local app state.
+    //  _orderItem.insert(
+    //       0,
+    //       Order(
+    //         id: json.decode(resp.body)['name'],
+    //         total: total,
+    //         dateAndTime: timeStamp,
+    //         products: cartItems,
+    //       ));
+
+    notifyListeners();
+  } //fetchOrderData
 }
 
-//
 //1. "toStringAsFixed" sets 2 decimal places to a double.
