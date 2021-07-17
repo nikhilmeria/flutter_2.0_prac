@@ -10,6 +10,8 @@ import 'package:provider/provider.dart';
 class MyAppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    print("UserInfo UID => ${AuthProvider.userData.uid}");
+
     return Scaffold(
       backgroundColor: Color(0xFF21BFBD),
       appBar: AppBar(
@@ -50,7 +52,14 @@ class MyAppScreen extends StatelessWidget {
           ),
         ],
       ),
-      drawer: AppDrawer(),
+      drawer: Theme(
+        data: Theme.of(context).copyWith(
+          canvasColor:
+              Colors.white, //This will change the drawer background to blue.
+          //other styles
+        ),
+        child: AppDrawer(),
+      ),
       body: RefreshIndicator(
         onRefresh: () {
           return Provider.of<ProductProvider>(context, listen: false)
@@ -83,16 +92,18 @@ class MyAppScreen extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: 40.0),
-            Container(
-              height: MediaQuery.of(context).size.height - 175.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(55.0),
+            SizedBox(height: 30.0),
+            Expanded(
+              child: Container(
+                height: MediaQuery.of(context).size.height - 184.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(55.0),
+                  ),
                 ),
+                child: ProductsScreen(),
               ),
-              child: ProductsScreen(),
             ),
           ],
         ),

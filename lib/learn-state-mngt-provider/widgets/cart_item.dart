@@ -87,7 +87,7 @@ class CartItem extends StatelessWidget {
       ),
       onDismissed: (direction) {
         Provider.of<CartProvider>(context, listen: false)
-            .removeItemFromCart(prodId);
+            .removeSingleItemFromCart(prodId);
       },
       confirmDismiss: (dismissDirection) {
         return showDialog(

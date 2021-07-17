@@ -139,7 +139,7 @@ class CartProvider with ChangeNotifier {
     }
   } //fetchProductsFromCartDB
 
-  void removeItemFromCart(String prodId) async {
+  Future<void> removeSingleItemFromCart(String prodId) async {
     // first remove item from cart DB
     var cartDBId;
     _cartItem!.forEach((key, value) {
@@ -165,7 +165,22 @@ class CartProvider with ChangeNotifier {
       print("Error while deleting product in cartDB => ${err.toString()}");
       throw err;
     }
-  }
+  } //removeSingleItemFromCart
+
+  Future<void> removeAllItemsFromCart() async {
+    final url = Uri.parse(
+        "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json");
+
+    try {
+      await http.delete(url);
+      print("delete all items in cart db done !!!");
+
+      notifyListeners();
+    } catch (err) {
+      print("Error while deleting all product in cartDB => ${err.toString()}");
+      throw err;
+    }
+  } //removeAllItemsFromCart
 
   void get clearCart {
     _cartItem = {};

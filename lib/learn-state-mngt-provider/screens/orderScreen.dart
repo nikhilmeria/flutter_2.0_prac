@@ -12,8 +12,13 @@ class OrderScreen extends StatelessWidget {
     await Provider.of<OrderProvider>(context, listen: false)
         .addOrderToDB(cartData.cartItem.values.toList(), cartData.getTotal);
 
-    //clear the cart
+    //clear the cart db and local app state
     Provider.of<CartProvider>(context, listen: false).clearCart;
+    await Provider.of<CartProvider>(context, listen: false)
+        .removeAllItemsFromCart();
+
+    Navigator.of(context)
+        .pushNamedAndRemoveUntil("/productScreen", (route) => false);
   }
 
   @override

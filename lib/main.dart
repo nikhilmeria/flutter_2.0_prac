@@ -8,6 +8,7 @@ import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/cartScreen.dart
 import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/myAppScreen.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/orderScreen.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/screens/productDetailsScreen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:flutter/material.dart';
@@ -41,9 +42,9 @@ void main() async {
       child: MaterialApp(
         theme: ThemeData(
           accentColor: Colors.orangeAccent,
-          primaryColor: Colors.purpleAccent,
+          primaryColor: Color(0xFF21BFBD),
         ),
-        home: Consumer<String?>(
+        home: Consumer<User?>(
           builder: (context, authData, child) =>
               authData == null ? AuthScreen() : MyAppScreen(),
         ),

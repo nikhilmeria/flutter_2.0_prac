@@ -3,14 +3,15 @@ import 'package:flutter/services.dart';
 
 class AuthProvider {
   static FirebaseAuth _auth = FirebaseAuth.instance;
+  static late User userData; //this will provide the current users DATA.
 
   //auth change user STREAM
-  static Stream<String?> get user {
-    String currentUsrId;
+  static Stream<User?> get user {
+    // String currentUsrId;
     return _auth.authStateChanges().map((ei) {
       if (ei != null) {
-        currentUsrId = ei.uid;
-        return currentUsrId;
+        // print("AUTH STREAM  => $ei");
+        return userData = ei;
       } else {
         return null;
       }
