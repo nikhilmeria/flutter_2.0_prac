@@ -1,3 +1,4 @@
+import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/auth-provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/product_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/widgets/product_item.dart';
 import 'package:flutter/material.dart';
@@ -11,9 +12,11 @@ class ProductsScreen extends StatelessWidget {
     ProductProvider productsData =
         Provider.of<ProductProvider>(context, listen: false);
 
+    print("ProductsScreen UID => ${AuthProvider.userData.uid}");
+
     // for "FutureBuilder" see video no 262
     return FutureBuilder(
-      future: productsData.fetchProductsFromDB(),
+      future: productsData.fetchProductsFromDB(AuthProvider.userData.uid),
       builder: (ctx, dataSnapshot) {
         if (dataSnapshot.connectionState == ConnectionState.waiting) {
           return Center(

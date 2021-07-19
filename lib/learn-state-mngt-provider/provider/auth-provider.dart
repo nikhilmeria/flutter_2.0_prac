@@ -25,8 +25,9 @@ class AuthProvider {
           email: email!, password: password!);
       print("user created => $createdUsr");
     } catch (e) {
-      print("register error => ${e.toString()}");
-      return null;
+      print("register error => $e");
+      throw e;
+      //return null;
     }
   }
 

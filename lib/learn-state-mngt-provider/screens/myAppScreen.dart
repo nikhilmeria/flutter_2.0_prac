@@ -12,6 +12,9 @@ class MyAppScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     print("UserInfo UID => ${AuthProvider.userData.uid}");
 
+    // String currentToken = AuthProvider.userData.getIdToken();
+    // print("UserInfo currentToken => $currentToken");
+
     return Scaffold(
       backgroundColor: Color(0xFF21BFBD),
       appBar: AppBar(
@@ -63,7 +66,7 @@ class MyAppScreen extends StatelessWidget {
       body: RefreshIndicator(
         onRefresh: () {
           return Provider.of<ProductProvider>(context, listen: false)
-              .fetchProductsFromDB();
+              .fetchProductsFromDB(AuthProvider.userData.uid);
         },
         child: Column(
           children: [

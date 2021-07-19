@@ -11,10 +11,10 @@ class ProductProvider with ChangeNotifier {
     return [..._products];
   }
 
-  Future<void> fetchProductsFromDB() async {
+  Future<void> fetchProductsFromDB(String uid) async {
     try {
       final url = Uri.parse(
-          "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/products.json");
+          "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?uid=$uid");
 
       final resp = await http.get(url);
       Map<String, dynamic>? fetchProducts = json.decode(resp.body);
@@ -44,7 +44,7 @@ class ProductProvider with ChangeNotifier {
       print("Error in fetchProductsFromDB => ${err.toString()}");
       throw err;
     }
-  }
+  } //fetchProductsFromDB
 
   Future<void> addProduct(Product recdProduct) async {
     // adding new product to firebase database

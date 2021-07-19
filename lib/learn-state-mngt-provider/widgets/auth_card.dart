@@ -33,8 +33,16 @@ class _AuthCardState extends State<AuthCard> {
       await AuthProvider.signIn(_authData['email'], _authData['password']);
       print("LOGIN done => ");
     } else {
-      await AuthProvider.register(_authData['email'], _authData['password']);
-      print("registered => ");
+      try {
+        await AuthProvider.register(_authData['email'], _authData['password']);
+        print("registered => ");
+      } catch (e) {
+        // print(
+        //     "register error in auth card => ${e.toString().contains("email-already-in-use")}");
+        print(
+            "register error in auth card => ${e.toString().contains("invalid-email")}");
+        _showErrorDialog("invalid-email");
+      }
     }
     setState(() {
       _isLoading = false;
@@ -51,6 +59,22 @@ class _AuthCardState extends State<AuthCard> {
         _authMode = AuthMode.Login;
       });
     }
+  }
+
+  void _showErrorDialog(String errMessage) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text('Error !'),
+        content: Text(errMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('Ok'),
+          ),
+        ],
+      ),
+    );
   }
 
   @override
