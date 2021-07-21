@@ -10,10 +10,7 @@ import 'package:provider/provider.dart';
 class MyAppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    print("UserInfo UID => ${AuthProvider.userData.uid}");
-
-    // String currentToken = AuthProvider.userData.getIdToken();
-    // print("UserInfo currentToken => $currentToken");
+    print("UserInfo UID => ${AuthProvider.userToken}");
 
     return Scaffold(
       backgroundColor: Color(0xFF21BFBD),
@@ -66,7 +63,7 @@ class MyAppScreen extends StatelessWidget {
       body: RefreshIndicator(
         onRefresh: () {
           return Provider.of<ProductProvider>(context, listen: false)
-              .fetchProductsFromDB(AuthProvider.userData.uid);
+              .fetchProductsFromDB(AuthProvider.userToken);
         },
         child: Column(
           children: [

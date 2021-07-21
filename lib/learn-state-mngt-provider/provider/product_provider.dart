@@ -11,17 +11,24 @@ class ProductProvider with ChangeNotifier {
     return [..._products];
   }
 
-  Future<void> fetchProductsFromDB(String uid) async {
+  Future<void> fetchProductsFromDB(String token) async {
+    print("fetchProductsFromDB token => $token");
     try {
       final url = Uri.parse(
-          "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?uid=$uid");
+          "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$token");
+
+      // final url = Uri.https(
+      //     'we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app',
+      //     '/products.json',
+      //     {'auth': '$token'});
 
       final resp = await http.get(url);
       Map<String, dynamic>? fetchProducts = json.decode(resp.body);
       //  final fetchProducts = json.decode(resp.body);
       final List<Product> tempList = [];
 
-      if (fetchProducts == null) {
+      if (fetchProducts == null || fetchProducts['error'] != null) {
+        print("Inside fetchedProducts with null or error value");
         //We hv no products in the DB.
         _products = [];
         notifyListeners();
@@ -41,7 +48,7 @@ class ProductProvider with ChangeNotifier {
       }
       //
     } catch (err) {
-      print("Error in fetchProductsFromDB => ${err.toString()}");
+      print("Error in fetchProductsFromDB => $err");
       throw err;
     }
   } //fetchProductsFromDB

@@ -16,7 +16,7 @@ class ProductsScreen extends StatelessWidget {
 
     // for "FutureBuilder" see video no 262
     return FutureBuilder(
-      future: productsData.fetchProductsFromDB(AuthProvider.userData.uid),
+      future: productsData.fetchProductsFromDB(AuthProvider.userToken),
       builder: (ctx, dataSnapshot) {
         if (dataSnapshot.connectionState == ConnectionState.waiting) {
           return Center(

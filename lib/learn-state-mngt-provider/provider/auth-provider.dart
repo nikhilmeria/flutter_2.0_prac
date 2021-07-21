@@ -4,13 +4,14 @@ import 'package:flutter/services.dart';
 class AuthProvider {
   static FirebaseAuth _auth = FirebaseAuth.instance;
   static late User userData; //this will provide the current users DATA.
+  static String userToken = "";
 
   //auth change user STREAM
   static Stream<User?> get user {
     // String currentUsrId;
     return _auth.authStateChanges().map((ei) {
       if (ei != null) {
-        // print("AUTH STREAM  => $ei");
+        print("AUTH STREAM  => $ei");
         return userData = ei;
       } else {
         return null;
@@ -39,6 +40,9 @@ class AuthProvider {
         password: password!,
       );
       print(" sign in done => ${resp.user}");
+      String token = await resp.user!.getIdToken();
+      print("User TOKEN => $token");
+      userToken = token;
     } on PlatformException catch (e) {
       print(" sign in error => ${e.code}");
     }
