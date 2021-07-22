@@ -41,7 +41,7 @@ class AuthProvider {
       );
       print(" sign in done => ${resp.user}");
       String token = await resp.user!.getIdToken();
-      print("User TOKEN => $token");
+      // print("User TOKEN => $token");
       userToken = token;
     } on PlatformException catch (e) {
       print(" sign in error => ${e.code}");

@@ -82,7 +82,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
       });
       Navigator.of(context).pop();
     });
-  }
+  } //_saveForm
 
   @override
   Widget build(BuildContext context) {

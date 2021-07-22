@@ -12,11 +12,11 @@ class ProductsScreen extends StatelessWidget {
     ProductProvider productsData =
         Provider.of<ProductProvider>(context, listen: false);
 
-    print("ProductsScreen UID => ${AuthProvider.userData.uid}");
+    //  print("ProductsScreen UID => ${AuthProvider.userData.uid}");
 
     // for "FutureBuilder" see video no 262
     return FutureBuilder(
-      future: productsData.fetchProductsFromDB(AuthProvider.userToken),
+      future: productsData.fetchProductsFromDB(),
       builder: (ctx, dataSnapshot) {
         if (dataSnapshot.connectionState == ConnectionState.waiting) {
           return Center(
