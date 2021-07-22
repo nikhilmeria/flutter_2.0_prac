@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/models/cart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
@@ -26,8 +27,8 @@ class CartProvider with ChangeNotifier {
     return double.parse(total.toStringAsFixed(2)); //round a double to 2 digit
   }
 
-  Future<void> addItemToCartDB(
-      String prodId, double price, String title, int quantity) async {
+  Future<void> addItemToCartDB(String userId, String prodId, double price,
+      String title, int quantity) async {
     //chk if the item being add, is already in the cart, if yes than we just increment the quantity count and dnt add a new item in the cart.
     String cartDBId = "";
     var oldQuantity;
@@ -77,25 +78,42 @@ class CartProvider with ChangeNotifier {
         throw err;
       }
     } else {
-      // first add product to cart DB
-      final url = Uri.parse(
-          "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json");
-
       try {
-        await http.post(
-          url,
-          body: json.encode({
-            "product": prodId,
-            "price": price,
-            "title": title,
-            "quantity": quantity,
-          }),
-        );
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userId)
+            .collection("Cart")
+            .add({
+          "product": prodId,
+          "price": price,
+          "title": title,
+          "quantity": quantity,
+        });
+
         notifyListeners();
       } catch (err) {
         print("Error while adding product to cart => ${err.toString()}");
         throw err;
       }
+      // first add product to cart DB
+      // final url = Uri.parse(
+      //     "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json");
+
+      // try {
+      //   await http.post(
+      //     url,
+      //     body: json.encode({
+      //       "product": prodId,
+      //       "price": price,
+      //       "title": title,
+      //       "quantity": quantity,
+      //     }),
+      //   );
+      //   notifyListeners();
+      // } catch (err) {
+      //   print("Error while adding product to cart => ${err.toString()}");
+      //   throw err;
+      // }
     }
   } // addItemToCartDB
 

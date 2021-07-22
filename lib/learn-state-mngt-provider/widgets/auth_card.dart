@@ -36,6 +36,9 @@ class _AuthCardState extends State<AuthCard> {
       try {
         await AuthProvider.register(_authData['email'], _authData['password']);
         print("registered => ");
+        setState(() {
+          _isLoading = false;
+        });
       } catch (e) {
         // print(
         //     "register error in auth card => ${e.toString().contains("email-already-in-use")}");
@@ -44,9 +47,6 @@ class _AuthCardState extends State<AuthCard> {
         _showErrorDialog("invalid-email");
       }
     }
-    setState(() {
-      _isLoading = false;
-    });
   }
 
   void _switchAuthMode() {

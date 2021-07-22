@@ -1,3 +1,4 @@
+import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/auth-provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +20,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
-  void handleAddToCart(CartProvider cartData, String prodId, String title,
+  void handleAddToCart(String AuthProvider.userData.uid,CartProvider cartData, String prodId, String title,
       double price, int quantity) async {
     await cartData.addItemToCartDB(prodId, price / quantity, title, quantity);
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -38,6 +39,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("ProductDetailsScreen UID => ${AuthProvider.userData.uid}");
     final routeArgs =
         ModalRoute.of(context)?.settings.arguments as Map<String, Object?>;
     final productPrice = routeArgs["price"];
@@ -292,6 +294,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             borderRadius: BorderRadius.circular(10.0),
                             child: InkWell(
                               onTap: () => handleAddToCart(
+                                AuthProvider.userData.uid
                                 cartData,
                                 routeArgs["id"].toString(),
                                 routeArgs["title"].toString(),

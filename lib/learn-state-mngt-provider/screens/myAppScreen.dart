@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 class MyAppScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //  print("UserInfo UID => ${AuthProvider.userToken}");
+    print("MyAppScreen UID => ${AuthProvider.userData.uid}");
 
     return Scaffold(
       backgroundColor: Color(0xFF21BFBD),
@@ -22,20 +22,20 @@ class MyAppScreen extends StatelessWidget {
         ),
         centerTitle: true,
         actions: [
-          // Consumer(
-          //   builder: (_, CartProvider cartData, Widget? child) => Badge(
-          //     child: child,
-          //     cartData: cartData,
-          //   ),
-          //   child: IconButton(
-          //     onPressed: () {
-          //       Navigator.of(context).pushNamed('/cartDetails');
-          //     },
-          //     icon: Icon(
-          //       Icons.shopping_bag_rounded,
-          //     ),
-          //   ),
-          // ),
+          Consumer(
+            builder: (_, CartProvider cartData, Widget? child) => Badge(
+              child: child,
+              cartData: cartData,
+            ),
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed('/cartDetails');
+              },
+              icon: Icon(
+                Icons.shopping_bag_rounded,
+              ),
+            ),
+          ),
           PopupMenuButton(
             itemBuilder: (ctx) => [
               PopupMenuItem(child: Text('Profile'), value: 0),
@@ -60,52 +60,53 @@ class MyAppScreen extends StatelessWidget {
         ),
         child: AppDrawer(),
       ),
-      body: //RefreshIndicator(
-          // onRefresh: () {
-          //   return Provider.of<ProductProvider>(context, listen: false)
-          //       .fetchProductsFromDB(AuthProvider.userToken);
-          // },
-          Column(
-        children: [
-          SizedBox(height: 25.0),
-          Padding(
-            padding: EdgeInsets.only(left: 40.0),
-            child: Row(
-              children: <Widget>[
-                Text(
-                  'Games',
-                  style: TextStyle(
-                    fontFamily: 'Montserrat',
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 25.0,
-                  ),
-                ),
-                SizedBox(width: 10.0),
-                Text(
-                  'World',
-                  style: TextStyle(
+      body: RefreshIndicator(
+        onRefresh: () {
+          return Provider.of<ProductProvider>(context, listen: false)
+              .fetchProductsFromDB();
+        },
+        child: Column(
+          children: [
+            SizedBox(height: 25.0),
+            Padding(
+              padding: EdgeInsets.only(left: 40.0),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    'Games',
+                    style: TextStyle(
                       fontFamily: 'Montserrat',
                       color: Colors.white,
-                      fontSize: 25.0),
-                )
-              ],
-            ),
-          ),
-          SizedBox(height: 30.0),
-          Expanded(
-            child: Container(
-              height: MediaQuery.of(context).size.height - 184.0,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(55.0),
-                ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 25.0,
+                    ),
+                  ),
+                  SizedBox(width: 10.0),
+                  Text(
+                    'World',
+                    style: TextStyle(
+                        fontFamily: 'Montserrat',
+                        color: Colors.white,
+                        fontSize: 25.0),
+                  )
+                ],
               ),
-              child: ProductsScreen(),
             ),
-          ),
-        ],
+            SizedBox(height: 30.0),
+            Expanded(
+              child: Container(
+                height: MediaQuery.of(context).size.height - 184.0,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(55.0),
+                  ),
+                ),
+                child: ProductsScreen(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

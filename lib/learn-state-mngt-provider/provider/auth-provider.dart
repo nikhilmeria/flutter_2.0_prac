@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 
@@ -25,6 +26,20 @@ class AuthProvider {
       UserCredential createdUsr = await _auth.createUserWithEmailAndPassword(
           email: email!, password: password!);
       print("user created => $createdUsr");
+      String token = await createdUsr.user!.getIdToken();
+      userToken = token;
+
+      // add user data in user DB in firestore
+      try {
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(createdUsr.user!.uid)
+            .set({
+          'email': createdUsr.user!.email,
+        });
+      } catch (e) {
+        print(" error creating user db => $e");
+      }
     } catch (e) {
       print("register error => $e");
       throw e;
