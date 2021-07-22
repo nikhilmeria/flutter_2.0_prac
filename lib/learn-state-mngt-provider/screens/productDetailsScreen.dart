@@ -20,9 +20,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
-  void handleAddToCart(String AuthProvider.userData.uid,CartProvider cartData, String prodId, String title,
-      double price, int quantity) async {
-    await cartData.addItemToCartDB(prodId, price / quantity, title, quantity);
+  void handleAddToCart(String uid, CartProvider cartData, String prodId,
+      String title, double price, int quantity) async {
+    await cartData.addItemToCartDB(
+        uid, prodId, price / quantity, title, quantity);
     ScaffoldMessenger.of(context).clearSnackBars();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -294,7 +295,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             borderRadius: BorderRadius.circular(10.0),
                             child: InkWell(
                               onTap: () => handleAddToCart(
-                                AuthProvider.userData.uid
+                                AuthProvider.userData.uid,
                                 cartData,
                                 routeArgs["id"].toString(),
                                 routeArgs["title"].toString(),

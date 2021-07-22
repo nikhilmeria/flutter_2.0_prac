@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class CartItem extends StatelessWidget {
+  final String userId;
   final String id;
   final String prodId;
   final double price;
@@ -10,6 +11,7 @@ class CartItem extends StatelessWidget {
   final String title;
 
   CartItem(
+    this.userId,
     this.id,
     this.prodId,
     this.price,
@@ -87,7 +89,7 @@ class CartItem extends StatelessWidget {
       ),
       onDismissed: (direction) {
         Provider.of<CartProvider>(context, listen: false)
-            .removeSingleItemFromCart(prodId);
+            .removeSingleItemFromCart(userId, prodId);
       },
       confirmDismiss: (dismissDirection) {
         return showDialog(

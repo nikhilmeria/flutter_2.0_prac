@@ -1,3 +1,4 @@
+import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/auth-provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/widgets/cart_item.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/widgets/order_button.dart';
@@ -40,6 +41,7 @@ class CartScreen extends StatelessWidget {
                       ),
                     )
                   : CartItem(
+                      AuthProvider.userData.uid,
                       cartData.cartItem.values.toList()[index].id!,
                       cartData.cartItem.keys.toList()[index],
                       cartData.cartItem.values.toList()[index].price!,

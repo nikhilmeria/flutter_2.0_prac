@@ -1,3 +1,4 @@
+import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/auth-provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
 import 'package:flutter/material.dart';
 
@@ -19,12 +20,14 @@ class Badge extends StatefulWidget {
 class _BadgeState extends State<Badge> {
   @override
   void initState() {
-    widget.cartData.fetchProductsFromCartDB();
+    print("Badge initState UID => ${AuthProvider.userData.uid}");
+    widget.cartData.fetchProductsFromCartDB(AuthProvider.userData.uid);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("Badge UID => ${AuthProvider.userData.uid}");
     int cartCount = widget.cartData.cartCount;
 
     return Stack(

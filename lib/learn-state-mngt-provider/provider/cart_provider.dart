@@ -49,18 +49,15 @@ class CartProvider with ChangeNotifier {
 
       print("cartDBId & oldQuantity  => $cartDBId = $oldQuantity");
 
-      final url = Uri.parse(
-          "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart/$cartDBId.json");
-
-      print("url  => $url");
       try {
-        await http.patch(
-          url,
-          body: json.encode({
-            'quantity': oldQuantity + quantity, // we only update the quantity
-          }),
-        );
-        print("update to product in cart db done!!!");
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(userId)
+            .collection("Cart")
+            .doc(cartDBId)
+            .update({
+          'quantity': oldQuantity + quantity,
+        });
 
         // updating cart entry in local app state
         _cartItem?.update(
@@ -78,6 +75,7 @@ class CartProvider with ChangeNotifier {
         throw err;
       }
     } else {
+      // adding first  product  to cart DB
       try {
         await FirebaseFirestore.instance
             .collection('Users')
@@ -95,60 +93,35 @@ class CartProvider with ChangeNotifier {
         print("Error while adding product to cart => ${err.toString()}");
         throw err;
       }
-      // first add product to cart DB
-      // final url = Uri.parse(
-      //     "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json");
-
-      // try {
-      //   await http.post(
-      //     url,
-      //     body: json.encode({
-      //       "product": prodId,
-      //       "price": price,
-      //       "title": title,
-      //       "quantity": quantity,
-      //     }),
-      //   );
-      //   notifyListeners();
-      // } catch (err) {
-      //   print("Error while adding product to cart => ${err.toString()}");
-      //   throw err;
-      // }
     }
   } // addItemToCartDB
 
-  Future<void> fetchProductsFromCartDB() async {
+  Future<void> fetchProductsFromCartDB(String uid) async {
     try {
-      final url = Uri.parse(
-          "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json");
+      QuerySnapshot<Map<String, dynamic>> fetchProducts =
+          await FirebaseFirestore.instance
+              .collection("Users")
+              .doc(uid)
+              .collection("Cart")
+              .get();
 
-      final resp = await http.get(url);
-      Map<String, dynamic>? fetchProducts = json.decode(resp.body);
-
-      if (fetchProducts == null) {
+      if (fetchProducts.size == 0) {
         //We hv no products in the Cart DB.
         print("no products in cart db");
         _cartItem = {};
         notifyListeners();
       } else {
         print("products found in cart db");
-        fetchProducts.forEach((key, value) {
-          print("fetchProducts => $key = $value");
+        fetchProducts.docs.forEach((ei) {
           _cartItem!.putIfAbsent(
-              value["product"],
+              ei.data()['product'],
               () => Cart(
-                    id: key, //id: value["product"]  // change 1
-                    title: value["title"],
-                    quantity: value["quantity"],
-                    price: value["price"],
+                    id: ei.id,
+                    title: ei.data()["title"],
+                    quantity: ei.data()["quantity"],
+                    price: ei.data()["price"],
                   ));
         });
-
-        _cartItem!.forEach((key, value) {
-          print(
-              "_cartItem from Cart DB => $key = ${value.id} = ${value.title}");
-        });
-
         notifyListeners();
       }
     } catch (err) {
@@ -157,7 +130,7 @@ class CartProvider with ChangeNotifier {
     }
   } //fetchProductsFromCartDB
 
-  Future<void> removeSingleItemFromCart(String prodId) async {
+  Future<void> removeSingleItemFromCart(String userId, String prodId) async {
     // first remove item from cart DB
     var cartDBId;
     _cartItem!.forEach((key, value) {
@@ -166,15 +139,15 @@ class CartProvider with ChangeNotifier {
         cartDBId = value.id!;
       }
     });
-    print("removeItemFromCart cartDBId  => $cartDBId ");
+    print("removeSingleItemFromCart cartDBId  => $cartDBId ");
 
-    final url = Uri.parse(
-        "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart/$cartDBId.json");
-
-    print("remove url  => $url");
     try {
-      await http.delete(url);
-      print("delete to product in cart db done!!!");
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userId)
+          .collection("Cart")
+          .doc(cartDBId)
+          .delete();
 
       // than remove from local app state
       _cartItem?.remove(prodId);
@@ -185,14 +158,17 @@ class CartProvider with ChangeNotifier {
     }
   } //removeSingleItemFromCart
 
-  Future<void> removeAllItemsFromCart() async {
-    final url = Uri.parse(
-        "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/cart.json");
-
+  //this fn is used in orders section
+  Future<void> removeAllItemsFromCart(String userId) async {
     try {
-      await http.delete(url);
-      print("delete all items in cart db done !!!");
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userId)
+          .collection("Cart")
+          .doc()
+          .delete();
 
+      print("delete all items in cart db done !!!");
       notifyListeners();
     } catch (err) {
       print("Error while deleting all product in cartDB => ${err.toString()}");
