@@ -9,10 +9,11 @@ import 'package:provider/provider.dart';
 
 class OrderScreen extends StatelessWidget {
   //
-  void handlePayment(BuildContext context, CartProvider cartData) async {
-    //adding  the order details in order db .
-    await Provider.of<OrderProvider>(context, listen: false)
-        .addOrderToDB(cartData.cartItem.values.toList(), cartData.getTotal);
+  void handlePayment(
+      String uid, BuildContext context, CartProvider cartData) async {
+    //adding the order details in order collection under Users DB.
+    await Provider.of<OrderProvider>(context, listen: false).addOrderToDB(
+        uid, cartData.cartItem.values.toList(), cartData.getTotal);
 
     //clear the cart db and local app state
     Provider.of<CartProvider>(context, listen: false).clearCart;
@@ -25,14 +26,6 @@ class OrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // OrderProvider orderObj = Provider.of<OrderProvider>(context);
-    // OrderProvider orderData = orderObj;
-    // double? total = 0;
-    // orderData.orderItem.map((ei) {
-    //   print("OrderScreen => ${ei.total}");
-    //   if (total == 0) total = ei.total;
-    // }).toList();
-
     CartProvider cartObj = Provider.of<CartProvider>(context, listen: false);
     CartProvider cartData = cartObj;
     print("Order Length => ${cartData.cartItem.length}");
@@ -108,7 +101,8 @@ class OrderScreen extends StatelessWidget {
                         fontStyle: FontStyle.italic,
                       ),
                     ),
-                    onPressed: () => handlePayment(context, cartData),
+                    onPressed: () => handlePayment(
+                        AuthProvider.userData.uid, context, cartData),
                   ),
                 ],
               ),

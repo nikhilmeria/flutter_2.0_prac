@@ -13,6 +13,7 @@ class AuthProvider {
     return _auth.authStateChanges().map((ei) {
       if (ei != null) {
         print("AUTH STREAM  => $ei");
+        // FirebaseAuth.instance.currentUser; // this will also provide userData
         return userData = ei;
       } else {
         return null;

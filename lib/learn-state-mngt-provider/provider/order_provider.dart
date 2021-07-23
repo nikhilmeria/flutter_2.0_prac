@@ -1,9 +1,7 @@
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/models/cart.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/models/order.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart' as http;
 
 class OrderProvider with ChangeNotifier {
   List<Order> _orderItem = [];
@@ -20,38 +18,34 @@ class OrderProvider with ChangeNotifier {
     return double.parse(tempTotal.toStringAsFixed(2)); //1
   }
 
-  Future<void> addOrderToDB(List<Cart> cartItems, double total) async {
-    // adding new order to firebase database
-    final url = Uri.parse(
-        "https://we2-cowax-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json");
-    final timeStamp = DateTime.now();
-
+  Future<void> addOrderToDB(
+      String uid, List<Cart> cartItems, double total) async {
     try {
-      await http.post(
-        url,
-        body: json.encode(
-          {
-            "total": total,
-            " dateAndTime": timeStamp.toIso8601String(),
-            "products": cartItems
-                .map((ei) => {
-                      "id": ei.id,
-                      "price": ei.price,
-                      "quantity": ei.quantity,
-                      "title": ei.title,
-                    })
-                .toList(),
-          },
-        ),
-      );
+      DocumentReference docRef = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(uid)
+          .collection("orders")
+          .add({
+        "total": total,
+        " dateAndTime": DateTime.now(),
+        "products": cartItems
+            .map((ei) => {
+                  "id": ei.id,
+                  "price": ei.price,
+                  "quantity": ei.quantity,
+                  "title": ei.title,
+                })
+            .toList(),
+      });
 
+      print("addOrderToDB docRef => ${docRef.id}");
       notifyListeners();
       //
     } catch (err) {
       print("Error in addOrder  => ${err.toString()}");
       throw err;
     }
-  } //addOrder
+  } //addOrderToDB
 
   Future<void> fetchOrderData() async {
     // users wants to see past orders, than we can fetch it from order db.
