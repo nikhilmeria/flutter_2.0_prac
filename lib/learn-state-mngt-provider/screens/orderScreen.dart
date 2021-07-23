@@ -1,4 +1,5 @@
 import 'package:coffee_shop_ui/learn-state-mngt-provider/models/cart.dart';
+import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/auth-provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/cart_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/provider/order_provider.dart';
 import 'package:coffee_shop_ui/learn-state-mngt-provider/widgets/app_drawer.dart';
@@ -7,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OrderScreen extends StatelessWidget {
+  //
   void handlePayment(BuildContext context, CartProvider cartData) async {
     //adding  the order details in order db .
     await Provider.of<OrderProvider>(context, listen: false)
@@ -15,7 +17,7 @@ class OrderScreen extends StatelessWidget {
     //clear the cart db and local app state
     Provider.of<CartProvider>(context, listen: false).clearCart;
     await Provider.of<CartProvider>(context, listen: false)
-        .removeAllItemsFromCart();
+        .removeAllItemsFromCart(AuthProvider.userData.uid);
 
     Navigator.of(context)
         .pushNamedAndRemoveUntil("/productScreen", (route) => false);

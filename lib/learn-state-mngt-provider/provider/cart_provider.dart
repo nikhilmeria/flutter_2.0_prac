@@ -165,11 +165,14 @@ class CartProvider with ChangeNotifier {
           .collection('Users')
           .doc(userId)
           .collection("Cart")
-          .doc()
-          .delete();
-
-      print("delete all items in cart db done !!!");
-      notifyListeners();
+          .get()
+          .then((querySnapshot) {
+        querySnapshot.docs.forEach((ei) {
+          ei.reference.delete();
+        });
+        print("delete all items in cart db done !!!");
+        notifyListeners();
+      });
     } catch (err) {
       print("Error while deleting all product in cartDB => ${err.toString()}");
       throw err;
